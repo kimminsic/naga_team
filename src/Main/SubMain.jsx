@@ -1,6 +1,10 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
-
+import "bootstrap/js/src/collapse.js";
+import Styles from "./css/style.css";
+import { Link } from "react-router-dom";
+import owl from "./lib/owlcarousel/assets/owl.carousel.min.css";
+import ScrollTop from "../components/ScrollTop";
 const SubMain = () => {
   return (
     <div>
@@ -11,7 +15,7 @@ const SubMain = () => {
         <meta content="Free HTML Templates" name="keywords" />
         <meta content="Free HTML Templates" name="description" />
 
-        <link href="img/favicon.ico" rel="icon" />
+        <link href=".img/favicon.ico" rel="icon" />
 
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
@@ -23,14 +27,8 @@ const SubMain = () => {
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
           rel="stylesheet"
         />
-
-        <link
-          href="lib/owlcarousel/assets/owl.carousel.min.css"
-          rel="stylesheet"
-        />
-
-        <link href="css/style.css" rel="stylesheet" />
       </Helmet>
+
       <div className="container-fluid bg-dark">
         <div className="row py-2 px-lg-5">
           <div className="col-lg-6 text-center text-lg-left mb-2 mb-lg-0">
@@ -68,11 +66,11 @@ const SubMain = () => {
 
       <div className="container-fluid p-0">
         <nav className="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-lg-5">
-          <a href="index.html" className="navbar-brand ml-lg-3">
+          <Link to="/" className="navbar-brand ml-lg-3">
             <h1 className="m-0 display-5 text-uppercase text-primary">
-              <i className="fa fa-truck mr-2"></i>Faster
+              <i className="fa fa-1x fa-plane text-blue pr-2"></i>NAGA
             </h1>
-          </a>
+          </Link>
           <button
             type="button"
             className="navbar-toggler"
@@ -86,9 +84,9 @@ const SubMain = () => {
             id="navbarCollapse"
           >
             <div className="navbar-nav m-auto py-0">
-              <a href="index.html" className="nav-item nav-link active">
+              <Link to="/" className="nav-item nav-link active">
                 Home
-              </a>
+              </Link>
               <a href="about.html" className="nav-item nav-link">
                 About
               </a>
@@ -119,9 +117,12 @@ const SubMain = () => {
                 Contact
               </a>
             </div>
-            <a href="/" className="btn btn-primary py-2 px-4 d-none d-lg-block">
+            <Link
+              to="/"
+              className="btn btn-primary py-2 px-4 d-none d-lg-block"
+            >
               Get A Quote
-            </a>
+            </Link>
           </div>
         </nav>
       </div>
@@ -408,9 +409,9 @@ const SubMain = () => {
                   </h6>
                 </li>
               </ul>
-              <a href="/" className="btn btn-primary mt-3 py-2 px-4">
+              <Link to="/" className="btn btn-primary mt-3 py-2 px-4">
                 Learn More
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -452,9 +453,9 @@ const SubMain = () => {
                   <p>Bootstrap 4</p>
                   <p>Responsive Layout</p>
                   <p>Compatible With All Browsers</p>
-                  <a href="/" className="btn btn-primary py-2 px-4 my-2">
+                  <Link to="/" className="btn btn-primary py-2 px-4 my-2">
                     Order Now
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -485,9 +486,9 @@ const SubMain = () => {
                   <p>Bootstrap 4</p>
                   <p>Responsive Layout</p>
                   <p>Compatible With All Browsers</p>
-                  <a href="/" className="btn btn-primary py-2 px-4 my-2">
+                  <Link to="/" className="btn btn-primary py-2 px-4 my-2">
                     Order Now
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -518,9 +519,9 @@ const SubMain = () => {
                   <p>Bootstrap 4</p>
                   <p>Responsive Layout</p>
                   <p>Compatible With All Browsers</p>
-                  <a href="/" className="btn btn-primary py-2 px-4 my-2">
+                  <Link to="/" className="btn btn-primary py-2 px-4 my-2">
                     Order Now
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -777,7 +778,7 @@ const SubMain = () => {
           </div>
         </div>
       </div>
-
+      {/* 
       <div className="container-fluid pt-5">
         <div className="container">
           <div className="text-center pb-2">
@@ -888,7 +889,7 @@ const SubMain = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="container-fluid bg-dark text-white mt-5 py-5 px-sm-3 px-md-5">
         <div className="row pt-5">
@@ -968,12 +969,12 @@ const SubMain = () => {
       </div>
       <div
         className="container-fluid bg-dark text-white border-top py-4 px-sm-3 px-md-5"
-        // style="border-color: #3E3E4E !important;"
+        style={{ borderColor: "#3E3E4E" }}
       >
         <div className="row">
           <div className="col-lg-6 text-center text-md-left mb-3 mb-md-0">
             <p className="m-0 text-white">
-              &copy; <a href="/">Your Site Name</a>. All Rights Reserved.
+              &copy; <Link to="/">Your Site Name</Link>. All Rights Reserved.
               <a href="https://htmlcodex.com">HTML Codex</a>
             </p>
           </div>
@@ -1004,9 +1005,9 @@ const SubMain = () => {
         </div>
       </div>
 
-      <a href="/" className="btn btn-lg btn-primary back-to-top">
+      <Link to={<ScrollTop />} className="btn btn-lg btn-primary back-to-top">
         <i className="fa fa-angle-double-up"></i>
-      </a>
+      </Link>
     </div>
   );
 };
