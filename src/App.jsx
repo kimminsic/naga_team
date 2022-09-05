@@ -1,14 +1,18 @@
-import { BrowserRouter as Routes, Route } from "react-router-dom";
-import Main from "./mainpage/Main";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Main from "./Intro/mainpage/Main";
+import SubMain from "./Main/SubMain";
 
 function App() {
   return (
     <>
-      <Routes>
+      <Router>
         <Route path="/">
           <Main />
         </Route>
-      </Routes>
+        <Route path="/SubMain">
+          <SubMain />
+        </Route>
+      </Router>
     </>
   );
 }
