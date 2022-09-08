@@ -1,69 +1,72 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import "bootstrap/js/src/collapse.js";
 import Styles from "./css/style.css";
 import { Link } from "react-router-dom";
 import owl from "./lib/owlcarousel/assets/owl.carousel.min.css";
 import ScrollTop from "../components/ScrollTop";
+import DomMetaTag from "./components/DomMetaTag";
+import axios from "axios";
 const SubMain = () => {
+  const [tourlist, setTourlist] = useState([]);
+  const [festival, setFestival] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [number, setNumber] = useState(0);
+  /*useEffect(() => {
+    fetch(
+      "https://apis.data.go.kr/B551011/KorService/searchStay?serviceKey=%2B5juZ2oo8p9fd9pgmKEEYLuIs4KE2JabN2JIjinKYJtXaVInvxjvQlFCIR9y8HHtHEpmLhqRtM7BDNb2XsBMcw%3D%3D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=C"
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        setTourlist(json.response.body.items.item);
+        setNumber(Math.floor(Math.random() * tourlist.length));
+        setLoading(false);
+      });
+  }, []);
+*/
+  useEffect(() => {
+    getData();
+    getFestivalData();
+  }, []);
+
+  async function getData() {
+    try {
+      const response = await axios.get(
+        "https://apis.data.go.kr/B551011/KorService/searchStay?serviceKey=%2B5juZ2oo8p9fd9pgmKEEYLuIs4KE2JabN2JIjinKYJtXaVInvxjvQlFCIR9y8HHtHEpmLhqRtM7BDNb2XsBMcw%3D%3D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=C"
+      );
+
+      setTourlist(response.data.response.body.items.item);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getFestivalData() {
+    try {
+      const response = await axios.get(
+        "http://api.kcisa.kr/openapi/service/rest/meta4/getKCPG0504?serviceKey=b88369aa-f525-4208-a102-7bc4e29fcd4c&numOfRows=10&pageNo=1"
+      );
+      setFestival(response.data.response.body.items.item);
+      console.log(response.data.response.body.items.item);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const buttonClick = () => {
+    console.log(tourlist);
+    console.log(number);
+    if (number < tourlist.length - 1) {
+      setNumber((prev) => prev + 1);
+    }
+  };
   return (
     <div>
+      <DomMetaTag />
       <Helmet>
-        <meta charset="utf-8" />
-        <title>FASTER - Logistics Company Website Template</title>
-        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-        <meta content="Free HTML Templates" name="keywords" />
-        <meta content="Free HTML Templates" name="description" />
-
-        <link href=".img/favicon.ico" rel="icon" />
-
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-          rel="stylesheet"
-        />
-
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
-          rel="stylesheet"
-        />
+        <title>당신의 여행 도우미 NAGA | DOMHOME</title>
       </Helmet>
-
-      <div className="container-fluid bg-dark">
-        <div className="row py-2 px-lg-5">
-          <div className="col-lg-6 text-center text-lg-left mb-2 mb-lg-0">
-            <div className="d-inline-flex align-items-center text-white">
-              <small>
-                <i className="fa fa-phone-alt mr-2"></i>+012 345 6789
-              </small>
-              <small className="px-3">|</small>
-              <small>
-                <i className="fa fa-envelope mr-2"></i>info@example.com
-              </small>
-            </div>
-          </div>
-          <div className="col-lg-6 text-center text-lg-right">
-            <div className="d-inline-flex align-items-center">
-              <a className="text-white px-2" href="/">
-                <i className="fab fa-facebook-f"></i>
-              </a>
-              <a className="text-white px-2" href="/">
-                <i className="fab fa-twitter"></i>
-              </a>
-              <a className="text-white px-2" href="/">
-                <i className="fab fa-linkedin-in"></i>
-              </a>
-              <a className="text-white px-2" href="/">
-                <i className="fab fa-instagram"></i>
-              </a>
-              <a className="text-white pl-2" href="/">
-                <i className="fab fa-youtube"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <button onClick={buttonClick}>확인</button>
       <div className="container-fluid p-0">
         <nav className="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-lg-5">
           <Link to="/" className="navbar-brand ml-lg-3">
@@ -84,16 +87,16 @@ const SubMain = () => {
             id="navbarCollapse"
           >
             <div className="navbar-nav m-auto py-0">
-              <Link to="/" className="nav-item nav-link active">
+              <Link to="/submain" className="nav-item nav-link active">
                 Home
               </Link>
-              <a href="about.html" className="nav-item nav-link">
+              <a href="/about" className="nav-item nav-link">
                 About
               </a>
-              <a href="service.html" className="nav-item nav-link">
+              <a href="/service" className="nav-item nav-link">
                 Service
               </a>
-              <a href="price.html" className="nav-item nav-link">
+              <a href="/price" className="nav-item nav-link">
                 Price
               </a>
               <div className="nav-item dropdown">
@@ -113,15 +116,15 @@ const SubMain = () => {
                   </a>
                 </div>
               </div>
-              <a href="contact.html" className="nav-item nav-link">
+              {/* <a href="contact.html" className="nav-item nav-link">
                 Contact
-              </a>
+              </a> */}
             </div>
             <Link
-              to="/"
+              to="/login"
               className="btn btn-primary py-2 px-4 d-none d-lg-block"
             >
-              Get A Quote
+              LOGIN
             </Link>
           </div>
         </nav>
@@ -129,173 +132,84 @@ const SubMain = () => {
 
       <div className="jumbotron jumbotron-fluid mb-5">
         <div className="container text-center py-5">
-          <h1 className="text-primary mb-4">Safe & Faster</h1>
-          <h1 className="text-white display-3 mb-5">Logistics Services</h1>
+          <h1 className="text-primary mb-4">국내</h1>
+
           <div className="mx-auto">
             <div className="input-group">
               <input
                 type="text"
                 className="form-control border-light"
                 style={{ padding: "30px" }}
-                placeholder="Tracking Id"
+                placeholder="검색어를 입력해주세요"
               />
               <div className="input-group-append">
-                <button className="btn btn-primary px-3">Track & Trace</button>
+                <button className="btn btn-primary px-3"> 검색</button>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <div className="container-fluid py-5">
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-lg-5 pb-4 pb-lg-0">
-              <img className="img-fluid w-100" src="img/about.jpg" alt="" />
-              <div className="bg-primary text-dark text-center p-4">
-                <h3 className="m-0">25+ Years Experience</h3>
+      {loading ? (
+        ""
+      ) : (
+        <div className="container-fluid py-5">
+          <div className="container">
+            <div className="col align-items-center border border-5">
+              <div className="col-lg-5 pb-4 pb-lg-0">
+                <img
+                  className="img-fluid w-100 rounded"
+                  // src={require("../Domestic/img/about.jpg")}
+                  src={festival[number].referenceIdentifier}
+                  alt=""
+                />
+                <div className="border border-5 text-dark text-center p-4 rounded ">
+                  <h3 className="m-0 fs-1">{festival[number].title}</h3>
+                </div>
               </div>
-            </div>
-            <div className="col-lg-7">
-              <h6 className="text-primary text-uppercase font-weight-bold">
-                About Us
-              </h6>
-              <h1 className="mb-4">
-                Trusted & Faster Logistic Service Provider
-              </h1>
-              <p className="mb-4">
-                Dolores lorem lorem ipsum sit et ipsum. Sadip sea amet diam
-                dolore sed et. Sit rebum labore sit sit ut vero no sit. Et elitr
-                stet dolor sed sit et sed ipsum et kasd ut. Erat duo eos et erat
-                sed diam duo
-              </p>
-              <div className="d-flex align-items-center pt-2">
-                <button
-                  type="button"
-                  className="btn-play"
-                  data-toggle="modal"
-                  data-src="https://www.youtube.com/embed/DWRcNpR6Kdc"
-                  data-target="#videoModal"
-                >
-                  <span></span>
-                </button>
-                <h5 className="font-weight-bold m-0 ml-4">Play Video</h5>
+              <div className="col-lg-7">
+                <h6 className="text-primary text-uppercase font-weight-bold">
+                  {festival[number].rights}
+                </h6>
+                <h1 className="mb-4">{festival[number].spatialCoverage}</h1>
               </div>
             </div>
           </div>
-        </div>
 
-        <div
-          className="modal fade"
-          id="videoModal"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-body">
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
+          <div
+            className="modal fade"
+            id="videoModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div className="modal-dialog" role="document">
+              <div className="modal-content">
+                <div className="modal-body">
+                  <button
+                    type="button"
+                    className="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
 
-                <div className="embed-responsive embed-responsive-16by9">
-                  {/* <iframe
+                  <div className="embed-responsive embed-responsive-16by9">
+                    {/* <iframe
                     className="embed-responsive-item"
                     src=""
                     id="video"
                     allowscriptaccess="always"
                     allow="autoplay"
                   ></iframe> */}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="container-fluid bg-secondary my-5">
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-lg-7 py-5 py-lg-0">
-              <h6 className="text-primary text-uppercase font-weight-bold">
-                Get A Quote
-              </h6>
-              <h1 className="mb-4">Request A Free Quote</h1>
-              <p className="mb-4">
-                Dolores lorem lorem ipsum sit et ipsum. Sadip sea amet diam
-                dolore sed et. Sit rebum labore sit sit ut vero no sit. Et elitr
-                stet dolor sed sit et sed ipsum et kasd ut. Erat duo eos et erat
-                sed diam duo
-              </p>
-              <div className="row">
-                <div className="col-sm-4">
-                  <h1 className="text-primary mb-2" data-toggle="counter-up">
-                    225
-                  </h1>
-                  <h6 className="font-weight-bold mb-4">SKilled Experts</h6>
-                </div>
-                <div className="col-sm-4">
-                  <h1 className="text-primary mb-2" data-toggle="counter-up">
-                    1050
-                  </h1>
-                  <h6 className="font-weight-bold mb-4">Happy Clients</h6>
-                </div>
-                <div className="col-sm-4">
-                  <h1 className="text-primary mb-2" data-toggle="counter-up">
-                    2500
-                  </h1>
-                  <h6 className="font-weight-bold mb-4">Complete Projects</h6>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-5">
-              <div className="bg-primary py-5 px-4 px-sm-5">
-                <form className="py-5">
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      className="form-control border-0 p-4"
-                      placeholder="Your Name"
-                      required="required"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="email"
-                      className="form-control border-0 p-4"
-                      placeholder="Your Email"
-                      required="required"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <select className="custom-select border-0 px-4">
-                      <option selected>Select A Service</option>
-                      <option value="1">Service 1</option>
-                      <option value="2">Service 1</option>
-                      <option value="3">Service 1</option>
-                    </select>
-                  </div>
-                  <div>
-                    <button
-                      className="btn btn-dark btn-block border-0 py-3"
-                      type="submit"
-                    >
-                      Get A Quote
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      )}
 
       <div className="container-fluid pt-5">
         <div className="container">
@@ -374,7 +288,7 @@ const SubMain = () => {
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-5">
-              <img className="img-fluid w-100" src="img/feature.jpg" alt="" />
+              <img className="img-fluid w-100" alt="" />
             </div>
             <div className="col-lg-7 py-5 py-lg-0">
               <h6 className="text-primary text-uppercase font-weight-bold">
@@ -540,7 +454,11 @@ const SubMain = () => {
           <div className="row">
             <div className="col-lg-3 col-md-6">
               <div className="team card position-relative overflow-hidden border-0 mb-5">
-                <img className="card-img-top" src="img/team-1.jpg" alt="" />
+                <img
+                  className="card-img-top"
+                  src={require("../Domestic/img/team-1.jpg")}
+                  alt=""
+                />
                 <div className="card-body text-center p-0">
                   <div className="team-text d-flex flex-column justify-content-center bg-secondary">
                     <h5 className="font-weight-bold">Full Name</h5>
@@ -574,7 +492,11 @@ const SubMain = () => {
             </div>
             <div className="col-lg-3 col-md-6">
               <div className="team card position-relative overflow-hidden border-0 mb-5">
-                <img className="card-img-top" src="img/team-2.jpg" alt="" />
+                <img
+                  className="card-img-top"
+                  src={require("../Domestic/img/team-2.jpg")}
+                  alt=""
+                />
                 <div className="card-body text-center p-0">
                   <div className="team-text d-flex flex-column justify-content-center bg-secondary">
                     <h5 className="font-weight-bold">Full Name</h5>
@@ -1005,9 +927,9 @@ const SubMain = () => {
         </div>
       </div>
 
-      <Link to={<ScrollTop />} className="btn btn-lg btn-primary back-to-top">
+      <button>
         <i className="fa fa-angle-double-up"></i>
-      </Link>
+      </button>
     </div>
   );
 };

@@ -19,6 +19,7 @@ const MetaTag = () => {
       />
 
       <link href="css/styles.css" rel="stylesheet" />
+      <title>당신의 여행 도우미 NAGA | INTRO</title>
     </Helmet>
   );
 };

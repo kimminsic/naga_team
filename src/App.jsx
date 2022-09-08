@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ScrollTop from "./components/ScrollTop";
-import Main from "./Intro/mainpage/Main";
-import SubMain from "./Main/SubMain";
+import Main from "./Intro/mainpage/Intro";
+import SubMain from "./Domestic/DomMain";
 
 function App() {
   return (

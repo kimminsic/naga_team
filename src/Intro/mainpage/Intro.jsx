@@ -51,7 +51,7 @@ const Main = () => {
           <div className="row gx-5 justify-content-center">
             <div className="col-lg-8">
               <div className="text-center my-5">
-                <h1 className="display-10 fw-bolder text-white mb-5">
+                <h1 className="display-10 fw-bolder text-white mb-5 text-shadow">
                   여행지를 선택해주세요
                 </h1>
 
