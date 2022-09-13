@@ -1,72 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import "bootstrap/js/src/collapse.js";
 import Styles from "./css/style.css";
 import { Link } from "react-router-dom";
 import owl from "./lib/owlcarousel/assets/owl.carousel.min.css";
 import ScrollTop from "../components/ScrollTop";
 import DomMetaTag from "./components/DomMetaTag";
 import axios from "axios";
-const SubMain = () => {
-  const [tourlist, setTourlist] = useState([]);
-  const [festival, setFestival] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [number, setNumber] = useState(0);
-  /*useEffect(() => {
-    fetch(
-      "https://apis.data.go.kr/B551011/KorService/searchStay?serviceKey=%2B5juZ2oo8p9fd9pgmKEEYLuIs4KE2JabN2JIjinKYJtXaVInvxjvQlFCIR9y8HHtHEpmLhqRtM7BDNb2XsBMcw%3D%3D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=C"
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        setTourlist(json.response.body.items.item);
-        setNumber(Math.floor(Math.random() * tourlist.length));
-        setLoading(false);
-      });
-  }, []);
-*/
-  useEffect(() => {
-    getData();
-    getFestivalData();
-  }, []);
-
-  async function getData() {
-    try {
-      const response = await axios.get(
-        "https://apis.data.go.kr/B551011/KorService/searchStay?serviceKey=%2B5juZ2oo8p9fd9pgmKEEYLuIs4KE2JabN2JIjinKYJtXaVInvxjvQlFCIR9y8HHtHEpmLhqRtM7BDNb2XsBMcw%3D%3D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=C"
-      );
-
-      setTourlist(response.data.response.body.items.item);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function getFestivalData() {
-    try {
-      const response = await axios.get(
-        "http://api.kcisa.kr/openapi/service/rest/meta4/getKCPG0504?serviceKey=b88369aa-f525-4208-a102-7bc4e29fcd4c&numOfRows=10&pageNo=1"
-      );
-      setFestival(response.data.response.body.items.item);
-      console.log(response.data.response.body.items.item);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  const buttonClick = () => {
-    console.log(tourlist);
-    console.log(number);
-    if (number < tourlist.length - 1) {
-      setNumber((prev) => prev + 1);
-    }
-  };
+import "bootstrap/js/src/collapse.js";
+import DomSlick from "./components/DomSlick";
+const DomMain = () => {
   return (
     <div>
       <DomMetaTag />
       <Helmet>
         <title>당신의 여행 도우미 NAGA | DOMHOME</title>
       </Helmet>
-      <button onClick={buttonClick}>확인</button>
+
       <div className="container-fluid p-0">
         <nav className="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-lg-5">
           <Link to="/" className="navbar-brand ml-lg-3">
@@ -77,8 +26,8 @@ const SubMain = () => {
           <button
             type="button"
             className="navbar-toggler"
-            data-toggle="collapse"
-            data-target="#navbarCollapse"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarCollapse"
           >
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -129,8 +78,14 @@ const SubMain = () => {
           </div>
         </nav>
       </div>
-
-      <div className="jumbotron jumbotron-fluid mb-5">
+      <div
+        className="jumbotron jumbotron-fluid mb-5"
+        style={{
+          backgroundImage:
+            "url(https://mblogthumb-phinf.pstatic.net/MjAxNzA2MTlfNDgg/MDAxNDk3ODAwMTMzNDIx.GF4RP0mOJpPcemv2CX2cA8b08L23eJ0VFpIKqpAw7jIg.G2-7h3-G5PArRS2WO9MCvAvzFibyHi0M0KJb8r9hTeog.JPEG.kusshand_official/3.jpg?type=w800)",
+          backgroundSize: "100%",
+        }}
+      >
         <div className="container text-center py-5">
           <h1 className="text-primary mb-4">국내</h1>
 
@@ -143,74 +98,13 @@ const SubMain = () => {
                 placeholder="검색어를 입력해주세요"
               />
               <div className="input-group-append">
-                <button className="btn btn-primary px-3"> 검색</button>
+                <button className="btn btn-primary px-3">검색</button>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {loading ? (
-        ""
-      ) : (
-        <div className="container-fluid py-5">
-          <div className="container">
-            <div className="col align-items-center border border-5">
-              <div className="col-lg-5 pb-4 pb-lg-0">
-                <img
-                  className="img-fluid w-100 rounded"
-                  // src={require("../Domestic/img/about.jpg")}
-                  src={festival[number].referenceIdentifier}
-                  alt=""
-                />
-                <div className="border border-5 text-dark text-center p-4 rounded ">
-                  <h3 className="m-0 fs-1">{festival[number].title}</h3>
-                </div>
-              </div>
-              <div className="col-lg-7">
-                <h6 className="text-primary text-uppercase font-weight-bold">
-                  {festival[number].rights}
-                </h6>
-                <h1 className="mb-4">{festival[number].spatialCoverage}</h1>
-              </div>
-            </div>
-          </div>
-
-          <div
-            className="modal fade"
-            id="videoModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-body">
-                  <button
-                    type="button"
-                    className="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-
-                  <div className="embed-responsive embed-responsive-16by9">
-                    {/* <iframe
-                    className="embed-responsive-item"
-                    src=""
-                    id="video"
-                    allowscriptaccess="always"
-                    allow="autoplay"
-                  ></iframe> */}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
+      <DomSlick />
       <div className="container-fluid pt-5">
         <div className="container">
           <div className="text-center pb-2">
@@ -283,7 +177,6 @@ const SubMain = () => {
           </div>
         </div>
       </div>
-
       <div className="container-fluid bg-secondary my-5">
         <div className="container">
           <div className="row align-items-center">
@@ -330,7 +223,6 @@ const SubMain = () => {
           </div>
         </div>
       </div>
-
       <div className="container-fluid pt-5">
         <div className="container">
           <div className="text-center pb-2">
@@ -442,7 +334,6 @@ const SubMain = () => {
           </div>
         </div>
       </div>
-
       <div className="container-fluid pt-5">
         <div className="container">
           <div className="text-center pb-2">
@@ -599,7 +490,6 @@ const SubMain = () => {
           </div>
         </div>
       </div>
-
       <div className="container-fluid py-5">
         <div className="container">
           <div className="text-center pb-2">
@@ -812,7 +702,6 @@ const SubMain = () => {
           </div>
         </div>
       </div> */}
-
       <div className="container-fluid bg-dark text-white mt-5 py-5 px-sm-3 px-md-5">
         <div className="row pt-5">
           <div className="col-lg-7 col-md-6">
@@ -926,7 +815,6 @@ const SubMain = () => {
           </div>
         </div>
       </div>
-
       <button>
         <i className="fa fa-angle-double-up"></i>
       </button>
@@ -934,4 +822,4 @@ const SubMain = () => {
   );
 };
 
-export default SubMain;
+export default DomMain;
