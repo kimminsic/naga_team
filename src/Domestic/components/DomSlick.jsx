@@ -12,7 +12,7 @@ const DomSlick = () => {
     slidesToShow: 3,
     slidesToScroll: 3,
     autoplay: true,
-    autoplaySpeed: 10000,
+    autoplaySpeed: 3000,
   };
 
   const [imageno, setImageNo] = useState(0);
