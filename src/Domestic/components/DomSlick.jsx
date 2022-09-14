@@ -4,6 +4,8 @@ import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import DomMetaTag from "./DomMetaTag";
+import Styles from "../css/style.css";
+import owl from "../lib/owlcarousel/assets/owl.carousel.min.css";
 const DomSlick = () => {
   const settings = {
     dots: true,
@@ -77,39 +79,67 @@ const DomSlick = () => {
           src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"
         ></script>
       </Helmet>
-
       <div>
         <Slider {...settings}>
-          {festival.map((v, index) => (
-            <div className="d-flex justify-content-center">
-              <a href={"festival/" + v.createdtime}>
-                <img
-                  object-fit="fill"
-                  src={v.firstimage}
-                  width="400px"
-                  height="500px"
-                  // 대체 이미지
-                  onError={({ currentTarget }) => {
-                    currentTarget.onerror = null;
-                    currentTarget.src =
-                      "https://cdn.discordapp.com/attachments/1019149016560324618/1019205553437822996/unknown.png";
-                  }}
-
-                  // 숨기기
-                  // onError={(i) => {
-                  //   i.target.style.display = "none";
-                  // }}
-
-                  //삭제
-                  // onError={(i) => {
-                  //   i.target.remove ? i.target.remove() : i.target.removeNode();
-                  // }}
-                />
-              </a>
-            </div>
-          ))}
+          {festival.map((v, index) => {
+            //조건부 랜더링
+            return (
+              v.firstimage && (
+                <div className="d-flex justify-content-center">
+                  <a href={"festival/" + v.createdtime}>
+                    <img
+                      object-fit="fill"
+                      src={v.firstimage}
+                      width="400px"
+                      height="500px"
+                    />
+                  </a>
+                </div>
+              )
+            );
+          })}
         </Slider>
       </div>
+      {/* <div>
+        <Slider {...settings}>
+          {festival.map((v, index) => {
+            return (
+              v.firstimage && (
+                <div className="d-flex justify-content-center ">
+                  <a href={"festival/" + v.createdtime} target="_blank">
+                    <div className="festivalImage">
+                      <img
+                        object-fit="fill"
+                        src={v.firstimage}
+                        width="400px"
+                        height="500px"
+                        alt="이미지"
+                        // 대체 이미지
+                        // onError={({ currentTarget }) => {
+                        //   currentTarget.onerror = null;
+                        //   currentTarget.src =
+                        //     "https://cdn.discordapp.com/attachments/1019149016560324618/1019205553437822996/unknown.png";
+                        // }}
+
+                        // 숨기기
+                        // onError={(i) => {
+                        //   i.target.style.display = "none";
+                        // }}
+
+                        //삭제
+                        // onError={(i) => {
+                        //   i.target.remove ? i.target.remove() : i.target.removeNode();
+                        // }}
+                      />
+                    </div>
+                  </a>
+                </div>
+              )
+            );
+          })}
+          )
+        </Slider>
+      </div> */}
     </div>
   );
 };
